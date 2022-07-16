@@ -8,7 +8,6 @@ import { WidgetsDataService } from '../services/widgets-data.service';
 import * as WidgetsActions from './widgets.actions';
 import { WidgetsEffects } from './widgets.effects';
 
-
 describe('WidgetsEffects', () => {
   let actions: Observable<Action>;
   let effects: WidgetsEffects;
@@ -41,25 +40,29 @@ describe('WidgetsEffects', () => {
       const widgets = [{ id: 1, name: 'Widget 01' }];
       allWidgetsSpy.mockReturnValue(of(widgets));
       const expected = WidgetsActions.loadWidgetsSuccess({ widgets });
+
       // Act
       actions = of(WidgetsActions.initWidgets());
+
       // Await
       const result = await firstValueFrom(effects.init$);
+
       // Assert
       expect(allWidgetsSpy).toBeCalled();
       expect(result).toEqual(expected);
     });
     it('should return loadWidgetsFailure', async () => {
       // Arrange
-      const errorMessage = 'Failed to load widgets';
-      allWidgetsSpy.mockReturnValue(throwError(() => errorMessage));
-      const expected = WidgetsActions.loadWidgetsFailure({
-        error: errorMessage,
-      });
+      const error = 'Failed to load widgets';
+      allWidgetsSpy.mockReturnValue(throwError(() => error));
+      const expected = WidgetsActions.loadWidgetsFailure({ error });
+
       // Act
       actions = of(WidgetsActions.initWidgets());
+
       // Await
       const result = await firstValueFrom(effects.init$);
+
       // Assert
       expect(allWidgetsSpy).toBeCalled();
       expect(result).toEqual(expected);
