@@ -11,7 +11,7 @@ export class WidgetsDataService {
 
   constructor(private readonly _http: HttpClient) {}
   
-  getWidgets(): Observable<WidgetsEntity[]> {
+  all(): Observable<WidgetsEntity[]> {
     return this._http.get<WidgetsEntity[]>(this.widgetsUrl);
   }
 }
