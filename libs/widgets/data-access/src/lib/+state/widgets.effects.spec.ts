@@ -3,7 +3,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { NxModule } from '@nrwl/angular';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import { firstValueFrom, Observable, of, throwError } from 'rxjs';
 import { WidgetsDataService } from '../services/widgets-data.service';
 
 import * as WidgetsActions from './widgets.actions';
@@ -41,6 +41,19 @@ describe('WidgetsEffects', () => {
       const widgets = [{id: 1, name: "Widget 01"}];
       allWidgetsSpy.mockReturnValue(of(widgets));
       const expected = WidgetsActions.loadWidgetsSuccess({ widgets });
+      // Act
+      actions = of(WidgetsActions.initWidgets());
+      // Await
+      const result = await firstValueFrom(effects.init$);
+      // Assert
+      expect(result).toEqual(expected);
+      expect(allWidgetsSpy).toBeCalled();
+    })
+    it('should return loadWidgetsFailure', async () => {
+      // Arrange
+      const errorMessage = 'Failed to load widgets'
+      allWidgetsSpy.mockReturnValue(throwError(() => errorMessage));
+      const expected = WidgetsActions.loadWidgetsFailure({ error: errorMessage});
       // Act
       actions = of(WidgetsActions.initWidgets());
       // Await
