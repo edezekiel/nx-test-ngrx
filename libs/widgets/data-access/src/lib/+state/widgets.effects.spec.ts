@@ -20,12 +20,7 @@ describe('WidgetsEffects', () => {
       imports: [NxModule.forRoot()],
       providers: [
         WidgetsEffects,
-        {
-          provide: WidgetsDataService,
-          useValue: {
-            all: allWidgetsSpy,
-          },
-        },
+        { provide: WidgetsDataService, useValue: { all: allWidgetsSpy } },
         provideMockActions(() => actions),
         provideMockStore(),
       ],
@@ -62,6 +57,22 @@ describe('WidgetsEffects', () => {
 
       // Await
       const result = await firstValueFrom(effects.init$);
+
+      // Assert
+      expect(allWidgetsSpy).toBeCalled();
+      expect(result).toEqual(expected);
+    });
+    it('should return loadWidgetsFailure (using .toPromise)', async () => {
+      // Arrange
+      const error = 'Failed to load widgets';
+      allWidgetsSpy.mockReturnValue(throwError(() => error));
+      const expected = WidgetsActions.loadWidgetsFailure({ error });
+
+      // Act
+      actions = of(WidgetsActions.initWidgets());
+
+      // Await
+      const result = await effects.init$.toPromise();
 
       // Assert
       expect(allWidgetsSpy).toBeCalled();
