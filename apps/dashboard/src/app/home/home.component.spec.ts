@@ -1,22 +1,27 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { widgetsFacadeInjector } from '@nx-test-ngrx/widgets/data-access';
 import { HomeComponent } from './home.component';
+
+jest.mock('@nx-test-ngrx/widgets/data-access');
+
+(widgetsFacadeInjector as jest.Mock).mockImplementation(() => ({
+  init: jest.fn(),
+}));
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [HomeComponent],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(HomeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    component = new HomeComponent();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('ngOnInit() should invoke facade.init', () => {
+    // Act
+    component.ngOnInit();
+    // Assert
+    expect(component['_widgetsFacade'].init).toBeCalled();
   });
 });

@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreModule } from '@ngrx/store';
+import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import * as fromWidgets from './+state/widgets.reducer';
+import { StoreModule } from '@ngrx/store';
 import { WidgetsEffects } from './+state/widgets.effects';
 import { WidgetsFacade } from './+state/widgets.facade';
+import * as fromWidgets from './+state/widgets.reducer';
 
 @NgModule({
   imports: [
