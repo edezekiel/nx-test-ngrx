@@ -1,11 +1,12 @@
 {
+  "name": "widgets-data-access",
   "projectType": "library",
   "sourceRoot": "libs/widgets/data-access/src",
   "prefix": "nx-test-ngrx",
   "targets": {
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/widgets/data-access"],
+      "outputs": ["{workspaceRoot}/coverage/libs/widgets/data-access"],
       "options": {
         "jestConfig": "libs/widgets/data-access/jest.config.ts",
         "passWithNoTests": true
