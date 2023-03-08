@@ -6,7 +6,7 @@ import { HomeComponent } from './home.component';
 export const provideDependencies = <T>(config: {
   token: ProviderToken<T>;
   providers: StaticProvider[];
-}) => {
+}): T => {
   const { providers, token } = config;
   const injector = Injector.create({ providers });
   return injector.get(token);
