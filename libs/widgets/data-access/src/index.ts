@@ -10,3 +10,5 @@ export * from './lib/+state/widgets.models';
 
 export { WidgetsActions, WidgetsFeature, WidgetsSelectors };
 export * from './lib/widgets-data-access.module';
+
+export { widgetsFacadeInjector} from './lib/utils/widgets-facade.inject'
