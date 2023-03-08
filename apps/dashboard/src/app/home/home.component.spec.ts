@@ -1,15 +1,40 @@
-import { Injector, ProviderToken, StaticProvider } from '@angular/core';
+import {
+  Injector,
+  ProviderToken,
+  StaticProvider,
+  Type,
+  ValueProvider
+} from '@angular/core';
 import { WidgetsFacade } from '@nx-test-ngrx/widgets/data-access';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HomeComponent } from './home.component';
 
 export const provideDependencies = <T>(config: {
-  token: ProviderToken<T>;
+  token: Type<T>;
   providers: StaticProvider[];
 }): T => {
   const { providers, token } = config;
-  const injector = Injector.create({ providers });
-  return injector.get(token);
+  if (!providers.length) {
+    return new token();
+  } else {
+    const deps: ProviderToken<any>[] = [];
+    providers.forEach((p) => {
+      if (isValueProvider(p)) {
+        deps.push(p.provide);
+      }
+    });
+    const tokenWithDependencies = { provide: token, deps };
+    const injector = Injector.create({
+      providers: [...providers, tokenWithDependencies],
+    });
+    return injector.get(token);
+  }
+};
+
+const isValueProvider = (
+  provider: StaticProvider
+): provider is ValueProvider => {
+  return (provider as ValueProvider).provide !== undefined;
 };
 
 describe('HomeComponent', () => {
@@ -21,13 +46,9 @@ describe('HomeComponent', () => {
       init: jest.fn(),
       loaded$: new BehaviorSubject<boolean>(false),
     };
-    const providers = [
-      { provide: WidgetsFacade, useValue: facadeMock },
-      { provide: HomeComponent, deps: [WidgetsFacade] },
-    ];
     component = provideDependencies<HomeComponent>({
       token: HomeComponent,
-      providers,
+      providers: [{ provide: WidgetsFacade, useValue: facadeMock }],
     });
   });
 
