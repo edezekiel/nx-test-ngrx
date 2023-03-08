@@ -3,12 +3,6 @@ import { WidgetsFacade } from '@nx-test-ngrx/widgets/data-access';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HomeComponent } from './home.component';
 
-// jest.mock('@nx-test-ngrx/widgets/data-access');
-
-// (widgetsFacadeInjector as jest.Mock).mockImplementation(() => ({
-//   init: jest.fn(),
-// }));
-
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let facadeMock: Partial<WidgetsFacade>;
