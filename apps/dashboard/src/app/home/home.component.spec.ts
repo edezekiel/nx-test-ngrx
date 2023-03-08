@@ -3,7 +3,7 @@ import { WidgetsFacade } from '@nx-test-ngrx/widgets/data-access';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HomeComponent } from './home.component';
 
-export const dependencyInjectorMock = <T>(config: {
+export const provideDependencies = <T>(config: {
   token: ProviderToken<T>;
   providers: StaticProvider[];
 }) => {
@@ -25,7 +25,7 @@ describe('HomeComponent', () => {
       { provide: WidgetsFacade, useValue: facadeMock },
       { provide: HomeComponent, deps: [WidgetsFacade] },
     ];
-    component = dependencyInjectorMock<HomeComponent>({
+    component = provideDependencies<HomeComponent>({
       token: HomeComponent,
       providers,
     });
