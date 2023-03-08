@@ -59,7 +59,7 @@ describe('HomeComponent', () => {
     // Act
     component.ngOnInit();
     // Assert
-    expect(component['_widgetsFacade'].init).toBeCalled();
+    expect(facadeMock.init).toBeCalled();
   });
   it('loaded$ should default to false', async () => {
     // Await
