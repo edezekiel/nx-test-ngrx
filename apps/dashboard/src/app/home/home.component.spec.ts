@@ -1,25 +1,34 @@
-import { Injector } from '@angular/core';
+import { Injector, ProviderToken, StaticProvider } from '@angular/core';
 import { WidgetsFacade } from '@nx-test-ngrx/widgets/data-access';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HomeComponent } from './home.component';
 
+export const dependencyInjectorMock = <T>(config: {
+  token: ProviderToken<T>;
+  providers: StaticProvider[];
+}) => {
+  const { providers, token } = config;
+  const injector = Injector.create({ providers });
+  return injector.get(token);
+};
+
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let facadeMock: Partial<WidgetsFacade>;
-  let injector: Injector;
 
   beforeEach(() => {
     facadeMock = {
       init: jest.fn(),
       loaded$: new BehaviorSubject<boolean>(false),
     };
-    injector = Injector.create({
-      providers: [
-        { provide: WidgetsFacade, useValue: facadeMock },
-        { provide: HomeComponent, deps: [WidgetsFacade] },
-      ],
+    const providers = [
+      { provide: WidgetsFacade, useValue: facadeMock },
+      { provide: HomeComponent, deps: [WidgetsFacade] },
+    ];
+    component = dependencyInjectorMock<HomeComponent>({
+      token: HomeComponent,
+      providers,
     });
-    component = injector.get(HomeComponent);
   });
 
   it('should create', () => {
