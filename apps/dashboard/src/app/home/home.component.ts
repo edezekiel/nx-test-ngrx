@@ -1,4 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  Directive,
+  inject,
+  OnInit,
+  Injectable,
+} from '@angular/core';
 import { WidgetsFacade } from '@nx-test-ngrx/widgets/data-access';
 
 @Component({
@@ -14,5 +20,23 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this._widgetsFacade.init();
+  }
+}
+
+@Injectable()
+export class MyService {
+  private readonly _widgetsFacade: WidgetsFacade = inject(WidgetsFacade);
+
+  init() {
+    return this._widgetsFacade.init();
+  }
+}
+
+@Directive()
+export class MyDirective {
+  private readonly _widgetsFacade: WidgetsFacade = inject(WidgetsFacade);
+
+  init() {
+    return this._widgetsFacade.init();
   }
 }
