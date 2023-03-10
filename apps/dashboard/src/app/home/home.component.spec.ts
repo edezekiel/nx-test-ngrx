@@ -1,22 +1,7 @@
-import {
-  Injector,
-  StaticProvider,
-  Type
-} from '@angular/core';
 import { WidgetsFacade } from '@nx-test-ngrx/widgets/data-access';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { classWithProviders } from './class-with-providers.util';
 import { HomeComponent, MyDirective, MyService } from './home.component';
-
-export const classWithProviders = <T>(config: {
-  token: Type<T>;
-  providers: StaticProvider[];
-}): T => {
-  const { providers, token } = config;
-  const injector = Injector.create({
-    providers: [...providers, { provide: token }],
-  });
-  return injector.get(token);
-};
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
