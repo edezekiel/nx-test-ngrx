@@ -1,7 +1,17 @@
+import { HttpClient } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { WidgetsFacade } from '@nx-test-ngrx/widgets/data-access';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { classWithProviders } from './class-with-providers.util';
 import { HomeComponent, MyDirective, MyService } from './home.component';
+
+const getPlanet = (id: number) => {
+  return inject(HttpClient).get<any>(`https://swapi.dev/api/planets${id}`);
+};
+
+describe('getPlanet()', () => {
+  //
+});
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
